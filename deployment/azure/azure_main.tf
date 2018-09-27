@@ -1,9 +1,26 @@
+/*
+ * Copyright 2018 Palo Alto Networks
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
 # Define the Azure resource group
 resource "azurerm_resource_group" "myterraformgroup" {
-        name = "${var.resourcegroup}"
-        location = "${var.location}"
+        name = "${var.azure_resource_group}"
+        location = "${var.azure_location}"
         tags {
-            environment = "${var.environment}"
+            environment = "${var.azure_environment}"
         }
 }
 
@@ -146,4 +163,55 @@ resource "azurerm_virtual_machine" "myterraformvm" {
     tags {
         environment = "${var.environment}"
     }
+}
+
+
+
+
+
+resource "azurerm_virtual_machine" "panos" {
+  name                  = "panos-azure"
+  location              = "${var.azure_location}"
+  resource_group_name   = "${azurerm_resource_group.myterraformgroup.name}"
+  vm_size               = "Standard_D3_v2"
+
+  depends_on = ["azurerm_network_interface.myterraformnic"]
+
+  plan {
+    name = "bundle2"
+    publisher = "paloaltonetworks"
+    product = "vmseries1"
+
+  }
+
+  storage_image_reference {
+    publisher = "paloaltonetworks"
+    offer     = "vmseries1"
+    sku       = "bundle2"
+    version   = "latest"
+  }
+
+  storage_os_disk {
+    name          = "fw-osdisk"
+    vhd_uri       = "${azurerm_storage_account.mystorageaccount.primary_blob_endpoint}vhds/osdisk-DB.vhd"
+    caching       = "ReadWrite"
+    create_option = "FromImage"
+  }
+
+  os_profile {
+    computer_name  = "${azurerm_virtual_machine.panos.name}"
+    admin_username = "${var.azure_firewall_user}"
+    admin_password = "${var.azure_firewall_password}"
+  }
+
+  network_int  primary_network_interface_id = "${azurerm_network_interface.myterraformnic.id}"
+  network_interface_ids = ["${azurerm_network_interface.myterraformnic.id}"]
+
+  tags {
+    environment = "${var.environment}"
+  }
+
+  os_profile_linux_config {
+    disable_password_authentication = false
+  }
 }

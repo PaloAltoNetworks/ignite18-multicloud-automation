@@ -26,7 +26,7 @@ data "google_compute_zones" "available" {
 
 resource "google_compute_instance" "panos" {
     count = 1
-    name = "panos"
+    name = "panos-gcp"
     machine_type = "n1-standard-4"
     zone = "${data.google_compute_zones.available.names[0]}"
     can_ip_forward = true

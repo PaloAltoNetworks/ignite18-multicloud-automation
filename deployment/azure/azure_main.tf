@@ -30,10 +30,6 @@ resource "azurerm_virtual_network" "myterraformnetwork" {
     address_space       = ["10.0.0.0/16"]
     location            = "${azurerm_resource_group.myterraformgroup.location}"
     resource_group_name = "${azurerm_resource_group.myterraformgroup.name}"
-
-    tags {
-        environment = "${var.environment}"
-    }
 }
 
 # Define the Azure subnet
@@ -50,10 +46,6 @@ resource "azurerm_public_ip" "myterraformpublicip" {
     location                     = "${azurerm_resource_group.myterraformgroup.location}"
     resource_group_name          = "${azurerm_resource_group.myterraformgroup.name}"
     public_ip_address_allocation = "dynamic"
-
-    tags {
-        environment = "${var.environment}"
-    }
 }
 
 # Define the Azure security group
@@ -64,7 +56,7 @@ resource "azurerm_network_security_group" "myterraformnsg" {
 
     security_rule {
         name                       = "SSH"
-        priority                   = 1001
+        priority                   = 100
         direction                  = "Inbound"
         access                     = "Allow"
         protocol                   = "Tcp"
@@ -72,10 +64,6 @@ resource "azurerm_network_security_group" "myterraformnsg" {
         destination_port_range     = "22"
         source_address_prefix      = "*"
         destination_address_prefix = "*"
-    }
-
-    tags {
-        environment = "${var.environment}"
     }
 }
 
@@ -91,10 +79,6 @@ resource "azurerm_network_interface" "myterraformnic" {
         private_ip_address_allocation = "dynamic"
         public_ip_address_id          = "${azurerm_public_ip.myterraformpublicip.id}"
     }
-
-    tags {
-        environment = "${var.environment}"
-    }
 }
 
 # Generate a random 8-byte string to use in the storage account name
@@ -103,7 +87,6 @@ resource "random_id" "randomId" {
         # Generate a new ID only when a new resource group is defined
         resource_group = "${azurerm_resource_group.myterraformgroup.name}"
     }
-
     byte_length = 8
 }
 
@@ -114,10 +97,6 @@ resource "azurerm_storage_account" "mystorageaccount" {
     location            = "${azurerm_resource_group.myterraformgroup.location}"
     account_replication_type = "LRS"
     account_tier = "Standard"
-
-    tags {
-        environment = "${var.environment}"
-    }
 }
 
 # Define the Azure virtual machine
@@ -158,10 +137,6 @@ resource "azurerm_virtual_machine" "panos" {
 
   primary_network_interface_id = "${azurerm_network_interface.myterraformnic.id}"
   network_interface_ids = ["${azurerm_network_interface.myterraformnic.id}"]
-
-  tags {
-    environment = "${var.environment}"
-  }
 
   os_profile_linux_config {
     disable_password_authentication = false

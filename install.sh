@@ -17,21 +17,21 @@
 
 # Install tools via yum
 function getTools() {
-    echo -n "Installing zip ..."
-    sudo yum -y install zip &> setup.log
+    echo -n "Installing unzip ..."
+    sudo yum -y -q install unzip
     echo " Done"
     echo -n "Installing python-pip ..."
-    sudo yum -y install python-pip &> setup.log
+    sudo yum -y -q install python-pip
     echo " Done"
     echo -n "Installing git ..."
-    sudo yum -y install git
+    sudo yum -y -q install git
     echo -n "Installing ansible ..."
-    sudo yum -y install ansible
+    sudo yum -y -q install ansible
     echo " Done"
     sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
     sudo sh -c 'echo -e "[azure-cli]\nname=Azure CLI\nbaseurl=https://packages.microsoft.com/yumrepos/azure-cli\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/azure-cli.repo'
     echo -n "Installing ansible ..."
-    sudo yum install azure-cli
+    sudo yum -y -q install azure-cli
     echo " Done"
 }
 
@@ -65,7 +65,7 @@ function getTerraform() {
 # Install Python libraries.
 function getPyLibs() {
   echo -n "Installing Python libraries ..."
-  sudo pip install pandevice xmltodict &>> setup.log
+  sudo pip -q install pandevice xmltodict
   echo " Done"
 }
 

@@ -37,7 +37,7 @@ variable "azure_environment" {
 variable "azure_ssh_key" {
     description = "Full path to the SSH public key file"
     type = "string"
-    default = "~/.ssh/lab_ssh_key.pub"
+    default = "${file("~/.ssh/lab_ssh_key.pub")}"
 }
 
 variable "azure_firewall_user" {

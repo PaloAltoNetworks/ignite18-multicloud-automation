@@ -15,3 +15,20 @@
  */
 
 
+/*
+ * Terraform output variables for Azure.
+ */
+
+
+data "azurerm_public_ip" "myterraformpublicip" {
+  name                = "${azurerm_public_ip.myterraformpublicip.name}"
+  resource_group_name = "${azurerm_virtual_machine.panos.resource_group_name}"
+}
+
+output "Azure firewall name" {
+  value = "${data.azurerm_public_ip.myterraformpublicip.domain_name_label}"
+}
+
+output "Azure firewall IP" {
+  value = "${data.azurerm_public_ip.myterraformpublicip.ip_address}"
+}

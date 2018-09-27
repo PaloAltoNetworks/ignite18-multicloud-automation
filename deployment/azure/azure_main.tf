@@ -130,9 +130,13 @@ resource "azurerm_virtual_machine" "panos" {
   }
 
   os_profile {
-    computer_name  = "${azurerm_virtual_machine.panos.name}"
+    computer_name  = "panos-azure"
     admin_username = "${var.azure_firewall_user}"
     admin_password = "${var.azure_firewall_password}"
+  }
+
+  ssh-key {
+    key_data = "${file("${var.azure_ssh_key")}"
   }
 
   primary_network_interface_id = "${azurerm_network_interface.myterraformnic.id}"

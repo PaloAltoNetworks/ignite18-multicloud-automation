@@ -156,7 +156,7 @@ resource "azurerm_virtual_machine" "panos" {
     admin_password = "${var.azure_firewall_password}"
   }
 
-  network_int  primary_network_interface_id = "${azurerm_network_interface.myterraformnic.id}"
+  primary_network_interface_id = "${azurerm_network_interface.myterraformnic.id}"
   network_interface_ids = ["${azurerm_network_interface.myterraformnic.id}"]
 
   tags {

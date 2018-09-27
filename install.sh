@@ -25,6 +25,7 @@ function getTools() {
     echo " Done"
     echo -n "Installing git ..."
     sudo yum -y -q install git
+    echo " Done"
     echo -n "Installing ansible ..."
     sudo yum -y -q install ansible
     echo " Done"
@@ -65,6 +66,7 @@ function getTerraform() {
 # Install Python libraries.
 function getPyLibs() {
   echo -n "Installing Python libraries ..."
+  sudo pip -q install --upgrade pip setuptools
   sudo pip -q install pandevice xmltodict
   echo " Done"
 }

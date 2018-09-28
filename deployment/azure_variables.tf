@@ -25,12 +25,14 @@ variable "azure_resource_group" {
 }
 
 variable "azure_location" {
-    description = "Netherlands"
+    description = "Azure Region"
     type = "string"
     default = "westeurope"
 }
 
 variable "azure_environment" {
+    description = "Azure Tag"
+    type = "string"
     default = "Ignite 18 Automation Workshop"
 }
 

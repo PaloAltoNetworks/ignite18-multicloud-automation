@@ -17,14 +17,14 @@
 
 # Install tools via yum
 function getTools() {
+    echo -n "Installing git ..."
+    sudo yum -y -q install git
+    echo " Done"
     echo -n "Installing unzip ..."
     sudo yum -y -q install unzip
     echo " Done"
     echo -n "Installing python-pip ..."
     sudo yum -y -q install python-pip
-    echo " Done"
-    echo -n "Installing git ..."
-    sudo yum -y -q install git
     echo " Done"
     echo -n "Installing ansible ..."
     sudo yum -y -q install ansible

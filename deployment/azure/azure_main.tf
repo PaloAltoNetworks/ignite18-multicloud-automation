@@ -65,6 +65,17 @@ resource "azurerm_network_security_group" "myterraformnsg" {
         source_address_prefix      = "*"
         destination_address_prefix = "*"
     }
+    security_rule {
+        name                       = "Web"
+        priority                   = 102
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "Tcp"
+        source_port_range          = "*"
+        destination_port_range     = "443"
+        source_address_prefix      = "*"
+        destination_address_prefix = "*"
+    }
 }
 
 # Define the Azure virtual NIC
@@ -133,10 +144,6 @@ resource "azurerm_virtual_machine" "panos" {
     computer_name  = "panos-azure"
     admin_username = "${var.azure_firewall_user}"
     admin_password = "${var.azure_firewall_password}"
-  }
-
-  ssh-key {
-    key_data = "${file("${var.azure_ssh_key")}"
   }
 
   primary_network_interface_id = "${azurerm_network_interface.myterraformnic.id}"

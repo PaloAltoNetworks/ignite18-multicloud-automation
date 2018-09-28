@@ -25,28 +25,23 @@ variable "azure_resource_group" {
 }
 
 variable "azure_location" {
-    description = "Ireland"
+    description = "Netherlands"
     type = "string"
-    default = "northeurope"
+    default = "westeurope"
 }
 
 variable "azure_environment" {
     default = "Ignite 18 Automation Workshop"
 }
 
-variable "azure_ssh_key" {
-    description = "Full path to the SSH public key file"
-    type = "string"
-    default = "${file("~/.ssh/lab_ssh_key.pub")}"
-}
-
 variable "azure_firewall_user" {
     description = "Firewall administrator username"
     type = "string"
-    default = "admin"
+    default = "labadmin"
 }
 
 variable "azure_firewall_password" {
     description = "Firewall administrator password"
     type = "string"
+    default = "PaloAlto123!"
 }

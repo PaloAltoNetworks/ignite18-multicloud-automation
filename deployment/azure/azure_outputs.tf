@@ -20,6 +20,12 @@
  */
 
 
-output "Azure firewall IP" {
-  value = "${data.azurerm_public_ip.myterraformpublicip.ip_address}"
+data "azurerm_public_ip" "datasourceip" {
+    name = "${azurerm_public_ip.myterraformpublicip.name}"
+    resource_group_name = "${azurerm_virtual_machine.panos.resource_group_name}"
+}
+
+output "azure_firewall_ip" {
+    value = "${data.azurerm_public_ip.datasourceip.ip_address}"
+    depends_on = ["azurerm_virtual_machine.panos"]
 }

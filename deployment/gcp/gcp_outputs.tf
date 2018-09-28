@@ -19,18 +19,11 @@
  * Terraform output variables for GCP.
  */
 
-output "Hostname"  {
-    value = "${google_compute_instance.panos.instance_id}"
-}
-
-output "External IP" {
+output "gcp_firewall_ip" {
     value = "${google_compute_instance.panos.network_interface.0.access_config.0.nat_ip}"
 }
 
-output "Zone" {
-    value = "${google_compute_instance.panos.zone}"
+output "gcp_firewall_hostname"  {
+    value = "${google_compute_instance.panos.instance_id}.${google_compute_instance.panos.zone}.${var.gcp_project_id}"
 }
 
-output "Project" {
-    value = "${var.gcp_project_id}"
-}

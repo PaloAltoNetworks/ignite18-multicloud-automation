@@ -1,0 +1,9 @@
+---
+all:
+    hosts:
+        gcp-firewall:
+            ip_address: ''
+        azure-firewall:
+            ip_address: ''
+    vars:
+        ansible_host: 'localhost'

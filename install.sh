@@ -18,22 +18,26 @@
 # Install tools via yum
 function getTools() {
     echo -n "Installing git ..."
-    sudo yum -y -q install git
+    sudo apt-get -y install git
     echo " Done"
     echo -n "Installing unzip ..."
-    sudo yum -y -q install unzip
+    sudo apt-get -y install unzip
     echo " Done"
     echo -n "Installing python-pip ..."
-    sudo yum -y -q install python-pip
+    sudo apt-get -y install python-pip
     echo " Done"
     echo -n "Installing ansible ..."
-    sudo yum -y -q install ansible
+    sudo apt-get -y install ansible
     echo " Done"
-    sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
-    sudo sh -c 'echo -e "[azure-cli]\nname=Azure CLI\nbaseurl=https://packages.microsoft.com/yumrepos/azure-cli\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/azure-cli.repo'
-    echo -n "Installing ansible ..."
-    sudo yum -y -q install azure-cli
+
+    echo -n "Installing azure-cli ..."
+    AZ_REPO=$(lsb_release -cs)
+    echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" | sudo tee /etc/apt/sources.list.d/azure-cli.list
+    curl -L https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+    sudo apt-get -y install apt-transport-https
+    sudo apt-get -y update && sudo apt-get -y install azure-cli
     echo " Done"
+
 }
 
 # Download and extract Terraform utility in the deployment directory.
@@ -66,8 +70,8 @@ function getTerraform() {
 # Install Python libraries.
 function getPyLibs() {
   echo -n "Installing Python libraries ..."
-  sudo pip -q install --upgrade pip setuptools
-  sudo pip -q install pandevice xmltodict
+  sudo pip install --upgrade pip setuptools
+  sudo pip install pandevice xmltodict
   echo " Done"
 }
 
